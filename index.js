@@ -47,27 +47,38 @@ async function run() {
         })
 
 
+        // app.get('/reviews', async(req, res) => {
+        //     let query = {};
+        //     if(req.query.postId){
+        //         query = {
+        //             postId : req.query.postId
+        //         }
+        //     }
+        //     const cursor = reviews.find(query)
+        //     const servicesReviews = await cursor.toArray();
+        //     res.send(servicesReviews);
+        // })
+
+        app.get('/reviews/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {postId: id};
+            const cursor = reviews.find(query);
+            const result = await cursor.toArray()
+            res.send(result);
+        })
+
 
         // Review 
         app.post('/reviews', async(req, res) => {
             const review = req.body;
+            console.log(review);
             const result = await reviews.insertOne(review);
             res.send(result)
         })
 
-        app.get('/reviews', async(req, res) => {
-            let id = req.query?.id;
-            
-            let query = {};
-            if(id)  {
-                query = {
-                    postId : id
-                }
-            }
-            const cursor = reviews.find(query);
-            const postReviews = await cursor.toArray()
-            res.send(postReviews);
-        })
+
+
+        
     }
     catch{
 
